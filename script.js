@@ -2,6 +2,7 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6Kkb8Rxd0amDkpL52
 
 const itemsBox = document.getElementById("itemsBox");
 const msg = document.getElementById("msg");
+const submitBtn = document.getElementById("submitBtn");
 
 function addItem() {
   const row = document.createElement("div");
@@ -45,9 +46,7 @@ function addItem() {
 }
 
 function removeItem(btn) {
-  if (document.querySelectorAll(".item-row").length === 1) {
-    return;
-  }
+  if (document.querySelectorAll(".item-row").length === 1) return;
 
   btn.closest(".item-row").remove();
   calculateTotal();
@@ -68,12 +67,18 @@ function calculateTotal() {
     totalAmount += amount;
   });
 
-  document.getElementById("totalWeightText").innerText = totalWeight.toFixed(2) + " Kg";
-  document.getElementById("totalAmountText").innerText = "₹ " + totalAmount.toFixed(2);
+  document.getElementById("totalWeightText").innerText =
+    totalWeight.toFixed(2) + " Kg";
+
+  document.getElementById("totalAmountText").innerText =
+    "₹ " + totalAmount.toFixed(2);
 }
 
 document.getElementById("scrapForm").addEventListener("submit", async function (e) {
   e.preventDefault();
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<span class="loader"></span>Submitting...`;
 
   const items = [];
 
@@ -93,13 +98,14 @@ document.getElementById("scrapForm").addEventListener("submit", async function (
 
   if (items.length === 0) {
     showMsg("Please add at least one valid scrap item.", "error");
+    resetSubmitButton();
     return;
   }
 
   const payload = {
-    items: items,
-    totalWeight: totalWeight,
-    totalAmount: totalAmount,
+    items,
+    totalWeight,
+    totalAmount,
     amountReceived: document.getElementById("amountReceived").value || 0,
     paymentMode: document.getElementById("paymentMode").value,
     clearedBy: document.getElementById("clearedBy").value,
@@ -118,6 +124,7 @@ document.getElementById("scrapForm").addEventListener("submit", async function (
 
     if (result.status === "success") {
       showMsg("Saved Successfully. ID: " + result.clearanceId, "success");
+
       document.getElementById("scrapForm").reset();
       itemsBox.innerHTML = "";
       addItem();
@@ -129,7 +136,14 @@ document.getElementById("scrapForm").addEventListener("submit", async function (
   } catch (error) {
     showMsg("Submit error. Web App URL check karo.", "error");
   }
+
+  resetSubmitButton();
 });
+
+function resetSubmitButton() {
+  submitBtn.disabled = false;
+  submitBtn.innerHTML = "Submit Clearance";
+}
 
 function showMsg(text, type) {
   msg.innerText = text;
