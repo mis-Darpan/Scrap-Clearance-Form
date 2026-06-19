@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrap Clearance Form</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+  <div class="form-card">
+
+    <div class="header">
+      <h1>Scrap Clearance Form</h1>
+      <p>Add scrap items, quantity, rate and calculate total automatically.</p>
+    </div>
+
+    <form id="scrapForm">
+
+      <div id="itemsBox"></div>
+
+      <button type="button" class="add-btn" onclick="addItem()">+ Add Scrap Item</button>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <span>Total Weight</span>
+          <strong id="totalWeightText">0.00 Kg</strong>
+        </div>
+
+        <div class="summary-box">
+          <span>Total Amount</span>
+          <strong id="totalAmountText">₹ 0.00</strong>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>Amount Received</label>
+          <input type="number" id="amountReceived" min="0" step="0.01" placeholder="Enter amount received" />
+        </div>
+
+        <div>
+          <label>Payment Mode</label>
+          <select id="paymentMode" required>
+            <option value="">Select Payment Mode</option>
+            <option>Cash</option>
+            <option>UPI</option>
+            <option>Bank Transfer</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Cleared By</label>
+      <input type="text" id="clearedBy" placeholder="Enter name" required />
+
+      <label>Remarks</label>
+      <textarea id="remarks" placeholder="Enter remarks"></textarea>
+
+      <button type="submit" class="submit-btn">Submit Clearance</button>
+
+      <div id="msg"></div>
+
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
